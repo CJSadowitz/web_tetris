@@ -1,3 +1,6 @@
+import { test } from './src/bitboard.js';
+window.test = test;
+
 function main()
 {
 	// Get the canvas element and the WebGL rendering context
@@ -11,8 +14,14 @@ function main()
 		alert('WebGL not supported');
 	}
 
+	// Game loop
+	// while (true)
+	// {
+	// 
+	// }
+
 	// Set the clear color to a bright blue
-	gl.clearColor(1.0, 0.5, 1.0, 1.0);
+	gl.clearColor(0.0, 0.5, 1.0, 1.0);
 
 	// Clear the color buffer
 	gl.clear(gl.COLOR_BUFFER_BIT);
