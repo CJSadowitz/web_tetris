@@ -1,5 +1,8 @@
 import { test } from './src/bitboard.js';
+import { key_listener } from './src/input_handler.js';
+
 window.test = test;
+key_listener();
 
 function main()
 {
