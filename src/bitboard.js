@@ -1,5 +1,5 @@
 import Piece from './pieces.js';
-class Bitboard
+export class Bitboard
 {
 	constructor()
 	{
@@ -14,22 +14,22 @@ class Bitboard
                 {
                         case(0):
                                 for (let i = 0; i < 4; i++)
-                                        if (check_bit(piece.pos[i] + position) == false)
+                                        if (this.check_bit(piece.pos[i] + position) == false)
                                                 return false;
                                 break;
                         case(1):
                                 for (let i = 0; i < 4; i++)
-                                        if (check_bit(piece.r_pos[i] + position) == false)
+                                        if (this.check_bit(piece.r_pos[i] + position) == false)
                                                 return false;
                                 break;
                         case(2):
                                 for (let i = 0; i < 4; i++)
-                                        if (check_bit((-1 * piece.pos[i]) + position) == false)
+                                        if (this.check_bit((-1 * piece.pos[i]) + position) == false)
                                                 return false;
                                 break;
                         case(3):
                                 for (let i = 0; i < 4; i++)
-                                        if (check_bit((-1 * piece.r_pos[i]) + position) == false)
+                                        if (this.check_bit((-1 * piece.r_pos[i]) + position) == false)
                                                 return false;
                                 break;
                 }
@@ -41,22 +41,22 @@ class Bitboard
 		{
 			case(0):
 				for (let i = 0; i < 4; i++)
-					if (check_bit(piece.pos[i] + new_position) == false)
+					if (this.check_bit(piece.pos[i] + new_position) == false)
 						return false;
 				break;
 			case(1):
 				for (let i = 0; i < 4; i++)
-					if (check_bit(piece.r_pos[i] + new_position) == false)
+					if (this.check_bit(piece.r_pos[i] + new_position) == false)
 						return false;
 				break;
 			case(2):
 				for (let i = 0; i < 4; i++)
-					if (check_bit((-1 * piece.pos[i]) + new_position) == false)
+					if (this.check_bit((-1 * piece.pos[i]) + new_position) == false)
 						return false;
 				break;
 			case(3):
 				for (let i = 0; i < 4; i++)
-					if (check_bit((-1 * piece.r_pos[i]) + new_position) == false)
+					if (this.check_bit((-1 * piece.r_pos[i]) + new_position) == false)
 						return false;
 				break;
 		}

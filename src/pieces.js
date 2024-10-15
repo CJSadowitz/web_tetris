@@ -1,4 +1,4 @@
-let Piece =
+export let Piece =
 {
 	i:
 	{
