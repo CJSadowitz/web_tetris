@@ -27,10 +27,11 @@ class Game
 		this.gl = gl;
 
 		// initialize shaders (hands are about to be thrown with this code
-		init_p_shader(gl).then(shader => {
-			if (shader) {
-				this.piece_program = shader;
+		init_p_shader(gl).then(program => {
+		if (program.program) {
+				this.piece_program = program.program;
 				console.log("Piece shaders initialized");
+				this.positionAttributeLocation = this.gl.getAttribLocation(program.program, "a_position");
 			}
 		});
 	}
@@ -57,52 +58,53 @@ class Game
 	}
 	render()
 	{
-		var positionAttributeLocation = this.gl.getAttribLocation(this.piece_program, "a_position");
+		// This needs to wait on this.piece_program to be loaded first
+		// var positionAttributeLocation = this.positionAttributeLocation;
 		// send piece data to buffers
-		var position_buffer = this.gl.createBuffer();
-		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, position_buffer);
+		// var position_buffer = this.gl.createBuffer();
+		// this.gl.bindBuffer(this.gl.ARRAY_BUFFER, position_buffer);
 
-		var positions = [
-			0, 0,
-			0, 0.5,
-			0.7, 0,
-		];
-		this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(positions), this.gl.STATIC_DRAW);
+		// var positions = [
+		// 	0, 0,
+		// 	0, 0.5,
+		//	0.7, 0,
+		// ];
+		// this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(positions), this.gl.STATIC_DRAW);
 
-  		// code above this line is initialization code.
-  		// code below this line is rendering code.
+  		// code above this line is initialization code
+  		// code below this line is rendering code
 
-  		// webglUtils.resizeCanvasToDisplaySize(this.gl.canvas);
+  		// webglUtils.resizeCanvasToDisplaySize(this.gl.canvas)
 
   		// Tell WebGL how to convert from clip space to pixels
-		this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
+		// this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
 
 		// Clear the canvas
-		this.gl.clearColor(0, 0, 0, 0);
-		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+		// this.gl.clearColor(0, 0, 0, 0);
+		// this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
 		// Tell it to use our program (pair of shaders)
-		this.gl.useProgram(this.piece_program);
+		// this.gl.useProgram(this.piece_program);
 
 		// Turn on the attribute
-		this.gl.enableVertexAttribArray(positionAttributeLocation);
+		// this.gl.enableVertexAttribArray(positionAttributeLocation);
 
-		// Bind the position buffer.
-		this.gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+		// Bind the position buffer
+		// this.gl.bindBuffer(this.gl.ARRAY_BUFFER, position_buffer);
 
 		// Tell the attribute how to get data out of positionBuffer (ARRAY_BUFFER)
-		var size = 2;          // 2 components per iteration
-		var type = gl.FLOAT;   // the data is 32bit floats
-		var normalize = false; // don't normalize the data
-		var stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
-		var offset = 0;        // start at the beginning of the buffer
-		this.gl.vertexAttribPointer(
-			positionAttributeLocation, size, type, normalize, stride, offset);
-		var primitiveType = gl.TRIANGLES;
-		var offset = 0;
-		var count = 3;
+		// var size = 2;          // 2 components per iteration
+		// var type = this.gl.FLOAT;   // the data is 32bit floats
+		// var normalize = false; // don't normalize the data
+		// var stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
+		// var offset = 0;        // start at the beginning of the buffer
+		// this.gl.vertexAttribPointer(
+		// 	positionAttributeLocation, size, type, normalize, stride, offset);
+		// var primitiveType = this.gl.TRIANGLES;
+		// var offset = 0;
+		// var count = 3;
 		// This is all I really need to call for the render loop, the rest can be in an object
-		this.gl.drawArrays(primitiveType, offset, count);
+		// this.gl.drawArrays(primitiveType, offset, count);
 	}
 	game_loop() // generate a piece, slowly move downward. place piece on board
 	{
