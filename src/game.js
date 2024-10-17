@@ -13,7 +13,7 @@ class Game
 	{
 		this.game_board = new Bitboard;
 		this.position = 123; // set position to be at the top of the screen for each new piece
-		this.cur_piece = get_random_piece(); // should start with a random piece
+		this.cur_piece = get_random_piece();
 		this.timer = new Timer; // make a class or function or something
 		this.input = new Game_Input();
 		this.input.key_listener();
@@ -51,13 +51,17 @@ class Game
 	}
 	render()
 	{
-		// why does this say null
+		// why does this render nothing?
 		var positions = [
 			0, 0,
 			0, 0.5,
 			0.7, 0,
 		];
 		this.piece_object.set_pos(positions);
+
+		// components per iteration, type, stide, offset (for 2D size of 2 works)
+		this.piece_object.set_attributes(2, this.gl.FLOAT, 0, 0);
+
 		this.piece_object.render();
 	}
 	async start()
