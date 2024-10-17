@@ -5,14 +5,7 @@ import { Timer } from './timer.js';
 import { get_random_piece } from './rand_piece.js';
 import { Shader } from './shader.js';
 import { load_shader } from './load_shader.js';
-
-// :)
-async function init_p_shader(gl)
-{
-	const p_v_shader_source = await load_shader('src/shaders/piece_v_shader.glsl');
-	const p_f_shader_source = await load_shader('src/shaders/piece_f_shader.glsl');
-	return new Shader(gl, p_v_shader_source, p_f_shader_source);
-}
+import { Object } from './renderer.js';
 
 class Game
 {
@@ -26,14 +19,14 @@ class Game
 		this.input.key_listener();
 		this.gl = gl;
 
-		// initialize shaders (hands are about to be thrown with this code
-		init_p_shader(gl).then(program => {
-		if (program.program) {
-				this.piece_program = program.program;
-				console.log("Piece shaders initialized");
-				this.positionAttributeLocation = this.gl.getAttribLocation(program.program, "a_position");
-			}
-		});
+		this.piece_object = null;
+		this.board_object = null;
+	}
+	async init_piece_shader()
+	{
+        	const p_v_shader_source = await load_shader('src/shaders/piece_v_shader.glsl');
+	        const p_f_shader_source = await load_shader('src/shaders/piece_f_shader.glsl');
+	        return new Shader(this.gl, p_v_shader_source, p_f_shader_source);
 	}
 	rotate_piece(piece, position, new_rotation)
 	{
@@ -58,53 +51,20 @@ class Game
 	}
 	render()
 	{
-		// This needs to wait on this.piece_program to be loaded first
-		// var positionAttributeLocation = this.positionAttributeLocation;
-		// send piece data to buffers
-		// var position_buffer = this.gl.createBuffer();
-		// this.gl.bindBuffer(this.gl.ARRAY_BUFFER, position_buffer);
-
-		// var positions = [
-		// 	0, 0,
-		// 	0, 0.5,
-		//	0.7, 0,
-		// ];
-		// this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(positions), this.gl.STATIC_DRAW);
-
-  		// code above this line is initialization code
-  		// code below this line is rendering code
-
-  		// webglUtils.resizeCanvasToDisplaySize(this.gl.canvas)
-
-  		// Tell WebGL how to convert from clip space to pixels
-		// this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
-
-		// Clear the canvas
-		// this.gl.clearColor(0, 0, 0, 0);
-		// this.gl.clear(this.gl.COLOR_BUFFER_BIT);
-
-		// Tell it to use our program (pair of shaders)
-		// this.gl.useProgram(this.piece_program);
-
-		// Turn on the attribute
-		// this.gl.enableVertexAttribArray(positionAttributeLocation);
-
-		// Bind the position buffer
-		// this.gl.bindBuffer(this.gl.ARRAY_BUFFER, position_buffer);
-
-		// Tell the attribute how to get data out of positionBuffer (ARRAY_BUFFER)
-		// var size = 2;          // 2 components per iteration
-		// var type = this.gl.FLOAT;   // the data is 32bit floats
-		// var normalize = false; // don't normalize the data
-		// var stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
-		// var offset = 0;        // start at the beginning of the buffer
-		// this.gl.vertexAttribPointer(
-		// 	positionAttributeLocation, size, type, normalize, stride, offset);
-		// var primitiveType = this.gl.TRIANGLES;
-		// var offset = 0;
-		// var count = 3;
-		// This is all I really need to call for the render loop, the rest can be in an object
-		// this.gl.drawArrays(primitiveType, offset, count);
+		this.piece_object.render();
+	}
+	async start()
+	{
+		this.init_piece_shader().then(program => {
+                if (program.program) {
+                                // this.piece_program = program.program;
+                                console.log("Piece shaders initialized");
+                                // this.positionAttributeLocation = this.gl.getAttribLocation(program.program, "a_position");
+                                this.piece_object = new Object(this.gl, program.program);
+                                this.board_object = new Object(this.gl, program.program);
+                        }
+                });
+		return true;
 	}
 	game_loop() // generate a piece, slowly move downward. place piece on board
 	{

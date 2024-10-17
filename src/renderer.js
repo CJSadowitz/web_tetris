@@ -3,10 +3,12 @@ export class Object
 	constructor(gl, s_program)
 	{
 		// members: buffer, gl-context, attribute, shader-program
+		console.log("Object Constructor Called");
+		this.status = true;
 		this.gl = gl;
-		this.program = s_program.program;
-		this.buffer = gen_buffer();
-		this.attrib_location(this.program, "a_position");
+		this.program = s_program;
+		this.buffer = this.gen_buffer();
+		this.attrib_location = this.gl.getAttribLocation(s_program, "a_position");
 		this.positions;
 	}
 	gen_buffer()
