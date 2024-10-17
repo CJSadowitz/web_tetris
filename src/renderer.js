@@ -34,7 +34,7 @@ export class Object
 		// bind the buffer
 		this.bind();
 		// draw the triangles
-		this.gl.drawArrays(this.gl.TRIANGLES, 0, this.positions.length());
+		this.gl.drawArrays(this.gl.TRIANGLES, 0, this.positions.length);
 		// the zero is the offset within the buffer
 	}
 	set_pos(positions)
@@ -44,5 +44,6 @@ export class Object
 		this.bind();
 		// put data into buffer
 		this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(positions), this.gl.STATIC_DRAW);
+		this.positions = positions;
 	}
 }

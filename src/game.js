@@ -22,7 +22,7 @@ class Game
 		this.piece_object = null;
 		this.board_object = null;
 	}
-	async init_piece_shader()
+	async init_objects()
 	{
         	const p_v_shader_source = await load_shader('src/shaders/piece_v_shader.glsl');
 	        const p_f_shader_source = await load_shader('src/shaders/piece_f_shader.glsl');
@@ -51,11 +51,18 @@ class Game
 	}
 	render()
 	{
+		// why does this say null
+		var positions = [
+			0, 0,
+			0, 0.5,
+			0.7, 0,
+		];
+		this.piece_object.set_pos(positions);
 		this.piece_object.render();
 	}
 	async start()
 	{
-		this.init_piece_shader().then(program => {
+		await this.init_objects().then(program => {
                 if (program.program) {
                                 // this.piece_program = program.program;
                                 console.log("Piece shaders initialized");
