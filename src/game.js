@@ -51,26 +51,30 @@ class Game
 	}
 	render()
 	{
-		// why does this render nothing?
+		// set uniform for resolution in screen
+		var piece_positions = this.cur_piece.pos;
 		var positions = [
-			0, 0,
-			0, 0.5,
-			0.7, 0,
+			-1.0, 1.0,
+			-1.0, -1.0,
+			1.0, 1.0,
+			1.0, 1.0,
+			-1.0, -1.0,
+			1.0, -1.0
 		];
-		this.piece_object.set_pos(positions);
 
+		// pass in a quad in buffer
+		// pass in uniform of offsets for drawing the piece
+		this.piece_object.set_pos(positions);
+		this.piece_object.set_offset_buffer(piece_positions.map(num => num + this.position));
 		// components per iteration, type, stide, offset (for 2D size of 2 works)
 		this.piece_object.set_attributes(2, this.gl.FLOAT, 0, 0);
-
 		this.piece_object.render();
 	}
 	async start()
 	{
 		await this.init_objects().then(program => {
                 if (program.program) {
-                                // this.piece_program = program.program;
                                 console.log("Piece shaders initialized");
-                                // this.positionAttributeLocation = this.gl.getAttribLocation(program.program, "a_position");
                                 this.piece_object = new Object(this.gl, program.program);
                                 this.board_object = new Object(this.gl, program.program);
                         }

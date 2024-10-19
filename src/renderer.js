@@ -9,7 +9,12 @@ export class Object
 		this.program = s_program;
 		this.buffer = this.gl.createBuffer();
 		this.attrib_location = this.gl.getAttribLocation(s_program, "a_position");
+
+		this.resolution_uniform_location = this.gl.getUniformLocation(s_program, "u_res");
+		this.offset_uniform_location = this.gl.getUniformLocation(s_program, "piece_offset");
+
 		this.size = 0;
+		this.offset_buffer_data = null;
 	}
 	bind()
 	{
@@ -20,15 +25,21 @@ export class Object
 		this.gl.enableVertexAttribArray(this.attrib_location);
 		this.gl.vertexAttribPointer(this.attrib_location, size, type, false, stride, offset);
 	}
+	set_offset_buffer(list)
+	{
+		this.offset_buffer_data = list;
+	}
 	render()
 	{
 		// Activate the shader
 		this.gl.useProgram(this.program);
-		// Activate the attributepointer
+
 		this.gl.enableVertexAttribArray(this.attrib_location);
-		// bind the buffer
 		this.bind();
-		// draw the triangles
+
+		this.gl.uniform2f(this.resolution_uniform_location, this.gl.canvas.width, this.gl.canvas.height);
+		this.gl.uniform1fv(this.offset_uniform_location, this.offset_buffer_data);
+
 		this.gl.drawArrays(this.gl.TRIANGLES, 0, this.size);
 		// the zero is the offset within the buffer
 	}
